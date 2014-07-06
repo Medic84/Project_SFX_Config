@@ -19,10 +19,10 @@ namespace Project_SFX_Config
         public SelectCom()
         {
             InitializeComponent();
-		}
+        }
 
         #region RightButtonPanel
-        
+
         private void TContextCopy_Click(object sender, EventArgs e)
         {
             _tempBox.Copy();
@@ -93,32 +93,32 @@ namespace Project_SFX_Config
             _tempBox = (TextBox)TContextMenu.SourceControl;
         }
 
-        #endregion
+        #endregion RightButtonPanel
 
         private void TPrpefixExecuteFileBt_Click(object sender, EventArgs e)
         {
-            var prefixWin = new SelectPrefix {Prefix = TPrpefixExecuteFile.Text};
+            var prefixWin = new SelectPrefix { Prefix = TPrpefixExecuteFile.Text };
             if (prefixWin.ShowDialog() == DialogResult.OK)
                 TPrpefixExecuteFile.Text = prefixWin.Prefix;
         }
 
         private void TPrpefixRunProgramBt_Click(object sender, EventArgs e)
         {
-            var prefixWin = new SelectPrefix {Prefix = TPrpefixRunProgram.Text};
+            var prefixWin = new SelectPrefix { Prefix = TPrpefixRunProgram.Text };
             if (prefixWin.ShowDialog() == DialogResult.OK)
                 TPrpefixRunProgram.Text = prefixWin.Prefix;
         }
 
         private void TPrpefixAutoInstallBt_Click(object sender, EventArgs e)
         {
-            var prefixWin = new SelectPrefix {Prefix = TPrpefixAutoInstall.Text};
+            var prefixWin = new SelectPrefix { Prefix = TPrpefixAutoInstall.Text };
             if (prefixWin.ShowDialog() == DialogResult.OK)
                 TPrpefixAutoInstall.Text = prefixWin.Prefix;
         }
 
         private void TAddExecuteFile_Click(object sender, EventArgs e)
         {
-            if (TExecuteEdit.Text == "") 
+            if (TExecuteEdit.Text == "")
             {
                 MessageBox.Show(this, "Поле \"Файл\" не может быть пустым!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -184,7 +184,7 @@ namespace Project_SFX_Config
                 if (TScorRadioUser.Checked) type += "u";
             }
             if (TScorRadioOther.Checked) type = TScorUpDownOther.Value.ToString(CultureInfo.InvariantCulture);
-            
+
             var command = type + ",{" + TScorFileName.Text + "},{" + TScorArgs.Text + "},{" + TScorFolder.Text + "},{" + TScorDescr.Text + "},{" + TScorName.Text + "},{" + TScorWorkingDir.Text + "},{" + TScorIcon.Text + "},{" + TScorIconIndex.Value + "}";
 
             AddItemToList("Shortcut" + TModiferShorcBox.Text, command, 0);
@@ -221,7 +221,7 @@ namespace Project_SFX_Config
             if (TLangCombo.Text != "Отсутствует")
             {
                 var reg = new Regex(@"[\w\(\)\s]+\s*-\s*(\d{4,5})");
-                string temp = reg.Replace(TLangCombo.Text,"$1");
+                string temp = reg.Replace(TLangCombo.Text, "$1");
                 section += ":Language:" + temp;
             }
             section = section != "" ? section.Remove(0, 1) : "Основная";
@@ -234,7 +234,6 @@ namespace Project_SFX_Config
 
         private void TCommandsList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
             if (TCommandsList.SelectedItems.Count > 0)
             {
                 _index = TCommandsList.SelectedItems[0].Index;
@@ -245,7 +244,6 @@ namespace Project_SFX_Config
                     liter = comm.Replace("AutoInstall", "");
                     liter = liter.Replace("Delete", "");
                     liter = liter.Replace("Shortcut", "");
-
                 }
                 else
                     TModifText.Text = "";
@@ -266,7 +264,6 @@ namespace Project_SFX_Config
                 }
                 else
                     TListNoArch.Checked = true;
-
 
                 if (lang != "")
                 {
@@ -301,7 +298,7 @@ namespace Project_SFX_Config
                 var reg = new Regex(@"[\w\(\)\s]+\s*-\s*(\d{4,5})");
                 string temp = reg.Replace(TListLangCombo.Text, "$1");
                 TCommandsList.SelectedItems[0].SubItems[3].Text = "Language:" + temp;
-            }   
+            }
             else
                 TCommandsList.SelectedItems[0].SubItems[3].Text = "Основная";
         }
@@ -327,7 +324,7 @@ namespace Project_SFX_Config
                 var reg = new Regex(@"[\w\(\)\s]+\s*-\s*(\d{4,5})");
                 string temp = reg.Replace(TListLangCombo.Text, "$1");
                 TCommandsList.SelectedItems[0].SubItems[3].Text = "x64:Language:" + temp;
-            }  
+            }
             else
                 TCommandsList.SelectedItems[0].SubItems[3].Text = "x64";
         }
@@ -352,9 +349,9 @@ namespace Project_SFX_Config
 
         private void удалитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-	        SFX.Delete(TCommandsList);
+            SFX.Delete(TCommandsList);
             _index = -1;
-			TItemsCount.Text = TCommandsList.Items.Count.ToString(CultureInfo.InvariantCulture) + " элементов";
+            TItemsCount.Text = TCommandsList.Items.Count.ToString(CultureInfo.InvariantCulture) + " элементов";
         }
 
         private void SelectCom_Load(object sender, EventArgs e)
@@ -400,9 +397,9 @@ namespace Project_SFX_Config
             }
         }
 
-		private void KeyPressing(object sender, KeyPressEventArgs e)
-		{
-			SFX.AntiModification(sender, e);
-		}
+        private void KeyPressing(object sender, KeyPressEventArgs e)
+        {
+            SFX.AntiModification(sender, e);
+        }
     }
 }

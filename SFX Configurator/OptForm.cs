@@ -18,7 +18,6 @@ namespace Project_SFX_Config
             TMiscFlags.Text = Params.MainIniFile.GetString("General", "MiscFlags", "4");
             TGUIMode.Text = Params.MainIniFile.GetString("General", "GUIMode", "1");
             TOverwriteMode.Text = Params.MainIniFile.GetString("General", "OverwriteMode", "Нет");
-
         }
 
         private void TSaveButton_Click(object sender, EventArgs e)
@@ -26,7 +25,7 @@ namespace Project_SFX_Config
             if (TAutoReplace.Checked)
                 Params.MainIniFile.WriteValue("General", "AutoReplace", "false"); // когда придумаешь как сделать замени на true
             else
-                Params.MainIniFile.WriteValue("General", "AutoReplace", "false"); 
+                Params.MainIniFile.WriteValue("General", "AutoReplace", "false");
             Params.MainIniFile.WriteValue("General", "GUIFlags", TGUIFlags.Text);
             Params.MainIniFile.WriteValue("General", "MiscFlags", TMiscFlags.Text);
             Params.MainIniFile.WriteValue("General", "GUIMode", TGUIMode.Text);

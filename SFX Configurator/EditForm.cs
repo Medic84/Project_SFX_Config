@@ -7,8 +7,9 @@ namespace Project_SFX_Config
         public string TextEdit
         {
             get { return TEdit.Text; }
-            set { TEdit.Text = value;}
+            set { TEdit.Text = value; }
         }
+
         public EditForm()
         {
             InitializeComponent();

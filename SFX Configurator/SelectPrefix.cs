@@ -104,7 +104,7 @@ namespace Project_SFX_Config
             ToolTiper.SetToolTip(TArchx64Radio, "Команда запуска будет выполнена ТОЛЬКО в 64-х битной системе.");
 
             ToolTiper.SetToolTip(Tshcnumber, "Режим обработки параметров 'Shortcut' и 'ShortcutX'.\n"
-                + "* 0 - отключает выполнение параметра 'Shortcut' даже при отсутствии литерного 'ShortcutX'\n" 
+                + "* 0 - отключает выполнение параметра 'Shortcut' даже при отсутствии литерного 'ShortcutX'\n"
                 + "* 1 - добавляет к выполнению параметра 'Shortcut' выполнение литерного 'ShortcutX'");
             ToolTiper.SetToolTip(TshcCheck, "Режим обработки параметров 'Shortcut' и 'ShortcutX'.\n"
                 + "* 0 - отключает выполнение параметра 'Shortcut' даже при отсутствии литерного 'ShortcutX'\n"
@@ -115,7 +115,6 @@ namespace Project_SFX_Config
             ToolTiper.SetToolTip(TdelCheck, "Режим обработки параметров 'Delete' и 'DeleteX'.\n"
                 + "* 0 - отключает выполнение параметра 'Delete' даже при отсутствии литерного 'DeleteX'\n"
                 + "* 1 - добавляет к выполнению параметра 'Delete' выполнение литерного 'DeleteX'");
-
         }
     }
 }

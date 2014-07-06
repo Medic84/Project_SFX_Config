@@ -1,13 +1,13 @@
-﻿using System;
-using System.Text;
-using System.Runtime.InteropServices;
-using System.Globalization;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
+using System.Globalization;
 using System.IO;
-using System.Windows.Forms;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
-using Microsoft.Win32;
+using System.Windows.Forms;
 
 namespace ToolsLibrary
 {
@@ -35,15 +35,15 @@ namespace ToolsLibrary
             int nSize,
             string lpFileName);
 
-/*
-            [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
-            public static extern uint GetPrivateProfileString(string lpAppName,
-            string lpKeyName,
-            string lpDefault,
-            [In, Out] char[] lpReturnedString,
-            int nSize,
-            string lpFileName);
-*/
+            /*
+                        [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+                        public static extern uint GetPrivateProfileString(string lpAppName,
+                        string lpKeyName,
+                        string lpDefault,
+                        [In, Out] char[] lpReturnedString,
+                        int nSize,
+                        string lpFileName);
+            */
 
             [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
             public static extern int GetPrivateProfileString(string lpAppName,
@@ -70,14 +70,12 @@ namespace ToolsLibrary
             string lpKeyName,
             string lpString,
             string lpFileName);
-
-
         }
-        #endregion
+
+        #endregion P/Invoke declares
 
         public IniFile(string path)
         {
-
             _mPath = System.IO.Path.GetFullPath(path);
         }
 
@@ -93,6 +91,7 @@ namespace ToolsLibrary
         {
             return Path;
         }
+
         #region Get Value Methods
 
         public string GetString(string sectionName,
@@ -136,7 +135,6 @@ namespace ToolsLibrary
             if (keyName == null)
                 throw new ArgumentNullException("keyName");
 
-
             return NativeMethods.GetPrivateProfileInt(sectionName, keyName, defaultValue, _mPath);
         }
 
@@ -149,7 +147,7 @@ namespace ToolsLibrary
             return string.IsNullOrEmpty(retval) ? defaultValue : Convert.ToDouble(retval, CultureInfo.InvariantCulture);
         }
 
-        #endregion
+        #endregion Get Value Methods
 
         #region GetSectionValues Methods
 
@@ -217,7 +215,7 @@ namespace ToolsLibrary
             return retval;
         }
 
-        #endregion
+        #endregion GetSectionValues Methods
 
         #region Get Key/Section Names
 
@@ -294,7 +292,7 @@ namespace ToolsLibrary
             return retval;
         }
 
-        #endregion
+        #endregion Get Key/Section Names
 
         #region Write Methods
 
@@ -340,7 +338,7 @@ namespace ToolsLibrary
             WriteValue(sectionName, keyName, value.ToString(CultureInfo.InvariantCulture));
         }
 
-        #endregion
+        #endregion Write Methods
 
         #region Delete Methods
 
@@ -363,7 +361,7 @@ namespace ToolsLibrary
             WriteValueInternal(sectionName, null, null);
         }
 
-        #endregion
+        #endregion Delete Methods
     }
 
     /// <summary>
@@ -408,7 +406,7 @@ namespace ToolsLibrary
             /// </summary>
             /// <param labelName="filename">The string to actually return in the <paramref labelName="eventHandler">eventHandler</paramref>.</param>
             /// <param labelName="entryname">The string that will be displayed in the menu.</param>
-            /// <param labelName="eventHandler">The <see cref="EventHandler">EventHandler</see> that 
+            /// <param labelName="eventHandler">The <see cref="EventHandler">EventHandler</see> that
             /// handles the <see cref="MenuItem.Click">Click</see> event for this menu item.</param>
             /// <param name="filename"> </param>
             /// <param name="entryname"> </param>
@@ -436,11 +434,14 @@ namespace ToolsLibrary
                 }
             }
         }
-        #endregion
+
+        #endregion MruMenuItem
 
         #region Construction
 
-        protected MRUClass() { }
+        protected MRUClass()
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the MruMenu class.
@@ -466,7 +467,6 @@ namespace ToolsLibrary
         public MRUClass(ToolStripMenuItem recentFileMenuItem, ClickedHandler clickedHandler, int maxEntries)
             : this(recentFileMenuItem, clickedHandler, null, false, maxEntries)
         {
-
         }
 
         /// <summary>
@@ -553,7 +553,7 @@ namespace ToolsLibrary
             }
         }
 
-        #endregion
+        #endregion Construction
 
         #region Event Handling
 
@@ -565,8 +565,7 @@ namespace ToolsLibrary
             _clickedHandler(MenuItems.IndexOf(menuItem) - StartIndex, menuItem.Filename);
         }
 
-
-        #endregion
+        #endregion Event Handling
 
         #region Properties
 
@@ -648,7 +647,7 @@ namespace ToolsLibrary
             }
         }
 
-        #endregion
+        #endregion Properties
 
         #region Helper Methods
 
@@ -823,7 +822,7 @@ namespace ToolsLibrary
             return pathname;
         }
 
-        #endregion
+        #endregion Helper Methods
 
         #region Get Methods
 
@@ -913,7 +912,8 @@ namespace ToolsLibrary
 
             return filenames;
         }
-        #endregion
+
+        #endregion Get Methods
 
         #region Add Methods
 
@@ -988,7 +988,7 @@ namespace ToolsLibrary
             }
         }
 
-        #endregion
+        #endregion Add Methods
 
         #region Remove Methods
 
@@ -1037,7 +1037,7 @@ namespace ToolsLibrary
             }
         }
 
-        #endregion
+        #endregion Remove Methods
 
         #region Rename Methods
 
@@ -1071,7 +1071,7 @@ namespace ToolsLibrary
             AddFile(newFilename, newEntryname);
         }
 
-        #endregion
+        #endregion Rename Methods
 
         #region Registry Methods
 
@@ -1167,7 +1167,7 @@ namespace ToolsLibrary
             }
         }
 
-        #endregion
+        #endregion Registry Methods
     }
 
     /// <summary>
@@ -1219,7 +1219,7 @@ namespace ToolsLibrary
             Init(recentFileMenuItem, clickedHandler, registryKeyName, loadFromRegistry, maxEntries);
         }
 
-        #endregion
+        #endregion Construction
 
         #region Overridden Properties
 
@@ -1255,7 +1255,7 @@ namespace ToolsLibrary
             }
         }
 
-        #endregion
+        #endregion Overridden Properties
 
         #region Overridden Methods
 
@@ -1291,13 +1291,11 @@ namespace ToolsLibrary
             }
         }
 
-        #endregion
+        #endregion Overridden Methods
     }
 
-    
     public class Tools
     {
-
         public static string GetMD5HashFromFile(string fileName)
         {
             try
@@ -1318,13 +1316,11 @@ namespace ToolsLibrary
             }
             catch
             { return ""; }
-            
         }
 
         public static int Execute(string adress, string par, bool waitforexit = false)
         {
-            var p = new System.Diagnostics.Process
-                        {StartInfo = {UseShellExecute = false, FileName = adress, Arguments = par}};
+            var p = new System.Diagnostics.Process { StartInfo = { UseShellExecute = false, FileName = adress, Arguments = par } };
             p.Start();
             if (waitforexit)
             {
@@ -1336,7 +1332,7 @@ namespace ToolsLibrary
 
         public static int Execute(string adress, bool shellexecute = true)
         {
-            var p = new System.Diagnostics.Process {StartInfo = {UseShellExecute = shellexecute, FileName = adress}};
+            var p = new System.Diagnostics.Process { StartInfo = { UseShellExecute = shellexecute, FileName = adress } };
             p.Start();
             return 0;
         }
@@ -1344,7 +1340,7 @@ namespace ToolsLibrary
         public static string ReplaceStrings(string str, char[] aOldChars, char[] aNewChars, bool truing = true)
         {
             var retStr = str;
-            if (retStr == null) return null; 
+            if (retStr == null) return null;
             if (aOldChars.Length != aNewChars.Length) return str;
             if (truing)
             {
@@ -1357,15 +1353,14 @@ namespace ToolsLibrary
         public static string ReplaceStrings(string str, string[] aOldChars, string[] aNewChars, bool truing = true)
         {
             var retStr = str;
-            if (retStr == null) return null; 
+            if (retStr == null) return null;
             if (aOldChars.Length != aNewChars.Length) return str;
             if (truing)
             {
-            for (var i = 0; i < aOldChars.Length; i++)
-                retStr = retStr.Replace(aOldChars[i], aNewChars[i]);
+                for (var i = 0; i < aOldChars.Length; i++)
+                    retStr = retStr.Replace(aOldChars[i], aNewChars[i]);
             }
             return retStr;
         }
     }
 }
-

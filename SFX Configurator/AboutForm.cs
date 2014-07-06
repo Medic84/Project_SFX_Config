@@ -23,22 +23,22 @@ namespace Project_SFX_Config
             Tools.Execute("http://mediclab.org/files/more/project-sfx-config-gui-dlja-sozdanija-konfiguracij-modificirovannogo-modulja-7zip.html");
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
+        private void TPicVK_Click(object sender, EventArgs e)
         {
-            Tools.Execute("http://vk.com/phoenix84");
+            Tools.Execute("http://vk.com/med1c84");
         }
 
-        private void pictureBox2_Click(object sender, EventArgs e)
+        private void TPicFB_Click(object sender, EventArgs e)
         {
             Tools.Execute("http://www.facebook.com/profile.php?id=100001124670058");
         }
 
-        private void pictureBox3_Click(object sender, EventArgs e)
+        private void TPicGPlus_Click(object sender, EventArgs e)
         {
             Tools.Execute("https://plus.google.com/u/0/116041127872162226481");
         }
 
-        private void pictureBox4_Click(object sender, EventArgs e)
+        private void TPicTwitter_Click(object sender, EventArgs e)
         {
 
             Tools.Execute("https://twitter.com/Med1c84");

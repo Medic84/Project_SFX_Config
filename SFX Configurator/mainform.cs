@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 using System.IO;
-using System.Windows.Forms;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 using ToolsLibrary;
 
 namespace Project_SFX_Config
@@ -32,9 +32,9 @@ namespace Project_SFX_Config
 
         private void ClearForm()
         {
-			SFX.ClearText(TTitle, TBeginPromptEdit, TErrorTitle, TPasswordTitleEdit, TExtractCancelText, 
-				TPasswordText, TCancelPromptText,THelpTextEdit,TWarningTitleEdit, TFinishMessageEdit, TExtractTitle,
-				TExtractPathTitle, TExtractPathText, TExtractDialogText, TCommText, TModifText, TParamText);
+            SFX.ClearText(TTitle, TBeginPromptEdit, TErrorTitle, TPasswordTitleEdit, TExtractCancelText,
+                TPasswordText, TCancelPromptText, THelpTextEdit, TWarningTitleEdit, TFinishMessageEdit, TExtractTitle,
+                TExtractPathTitle, TExtractPathText, TExtractDialogText, TCommText, TModifText, TParamText);
             TBeginPromptTimeOut.Value = 0;
             for (var i = 0; i < TMiscList.Items.Count; i++)
                 TMiscList.SetItemChecked(i, false);
@@ -42,19 +42,19 @@ namespace Project_SFX_Config
                 TDesignList.SetItemChecked(i, false);
             TOverWriteCombo.Text = "Нет";
             TGUIMode.Text = "Нет";
-			TCommandsList.Items.Clear();
+            TCommandsList.Items.Clear();
             TOverwritesysCheck.Checked = false;
             TSelfDeleteCheck.Checked = false;
             Params.Languages.Clear();
             LoadLangsArray(TTextLangsCombo.Items.Count + 1);
             SetStateSaveButton(false);
-	        _index = -1;
+            _index = -1;
         }
 
         private void OnMruFile(int number, String filename)
         {
-                OpeningFile(filename);
-                MRUMenu.SetFirstFile(number);
+            OpeningFile(filename);
+            MRUMenu.SetFirstFile(number);
         }
 
         public void OpeningFile(string filePath)
@@ -62,19 +62,19 @@ namespace Project_SFX_Config
             MRUMenu.AddFile(filePath);
             MRUMenu.SaveToRegistry();
             var read = new StreamReader(filePath);
-	        var sectionsMatches = SFX.GetMatches(read.ReadToEnd(),
-	                       @";!@Install@!UTF-8((?:\:x\d{2,2})?(?:\:Language\:\d{4,5})?)!\s?(.+?)\s?;!@InstallEnd@(?:\:x\d{2})?(?:\:Language\:\d{4,5})?!");
-		foreach (Match match in sectionsMatches)
+            var sectionsMatches = SFX.GetMatches(read.ReadToEnd(),
+                           @";!@Install@!UTF-8((?:\:x\d{2,2})?(?:\:Language\:\d{4,5})?)!\s?(.+?)\s?;!@InstallEnd@(?:\:x\d{2})?(?:\:Language\:\d{4,5})?!");
+            foreach (Match match in sectionsMatches)
             {
                 var sectiontext = match.Groups[2].Value;
                 var section = match.Groups[1].Value == "" ? "Основная" : match.Groups[1].Value.Remove(0, 1);
-	            var paramsMatches = SFX.GetMatches(sectiontext,
-	                                               @"(?s)(;?\x20*\t*\w+\d?)\s*=\s*(?:""(.+?)""|(-))(?=\s*[\r\n]|$)",
-	                                               RegexOptions.None);
+                var paramsMatches = SFX.GetMatches(sectiontext,
+                                                   @"(?s)(;?\x20*\t*\w+\d?)\s*=\s*(?:""(.+?)""|(-))(?=\s*[\r\n]|$)",
+                                                   RegexOptions.None);
 
                 foreach (Match paramsMatch in paramsMatches)
                 {
-                    string findedcomm = paramsMatch.Groups[1].Value.Replace(" ",""), findedparam = paramsMatch.Groups[2].Value;
+                    string findedcomm = paramsMatch.Groups[1].Value.Replace(" ", ""), findedparam = paramsMatch.Groups[2].Value;
                     if (paramsMatch.Groups[3].Value == "-") findedparam = paramsMatch.Groups[3].Value;
                     var index = 4;
 
@@ -83,63 +83,82 @@ namespace Project_SFX_Config
                         case "GUIMode":
                             SetGUIMode(findedparam);
                             break;
+
                         case "OverwriteMode":
                             SetOverwriteMode(findedparam);
                             break;
+
                         case "MiscFlags":
-							SFX.SetFlags(findedparam, ref TMiscList, 9);
+                            SFX.SetFlags(findedparam, ref TMiscList, 9);
                             break;
+
                         case "GUIFlags":
-							SFX.SetFlags(findedparam, ref TDesignList, 16385);
+                            SFX.SetFlags(findedparam, ref TDesignList, 16385);
                             break;
+
                         case "Title":
                             FoundIn(section, findedparam, 0);
                             break;
+
                         case "BeginPrompt":
                             FoundIn(section, findedparam, 1);
                             break;
+
                         case "FinishMessage":
                             FoundIn(section, findedparam, 2);
                             break;
+
                         case "ExtractTitle":
                             FoundIn(section, findedparam, 3);
                             break;
+
                         case "ExtractPathTitle":
                             FoundIn(section, findedparam, 4);
                             break;
+
                         case "ExtractPathText":
                             FoundIn(section, findedparam, 5);
                             break;
+
                         case "ExtractDialogText":
                             FoundIn(section, findedparam, 6);
                             break;
+
                         case "ErrorTitle":
                             FoundIn(section, findedparam, 7);
                             break;
+
                         case "ExtractCancelText":
                             FoundIn(section, findedparam, 8);
                             break;
+
                         case "CancelPrompt":
                             FoundIn(section, findedparam, 9);
                             break;
+
                         case "HelpText":
                             FoundIn(section, findedparam, 10);
                             break;
+
                         case "WarningTitle":
                             FoundIn(section, findedparam, 11);
                             break;
+
                         case "PasswordTitle":
                             FoundIn(section, findedparam, 12);
                             break;
+
                         case "PasswordText":
                             FoundIn(section, findedparam, 13);
                             break;
+
                         case "BeginPromptTimeout":
                             FoundIn(section, findedparam, 14);
                             break;
+
                         default:
-                                if (!CheckInListCombo( (section.Replace("Language:", "").Trim() )))
-                                    AddLangInCombos(section.Replace("Language:", "").Trim());
+                            if (!CheckInListCombo((section.Replace("Language:", "").Trim())))
+                                AddLangInCombos(section.Replace("Language:", "").Trim());
                             if (findedcomm.Contains("Delete")) index = 3;
                             if (findedcomm.Contains("Shortcut")) index = 0;
                             if ((findedcomm.Contains("SetEnvironment")) || (findedcomm.Contains("InstallPath"))) index = 1;
@@ -152,7 +171,7 @@ namespace Project_SFX_Config
                 }
             }
         }
-        
+
         private void BuildFile(string path, bool notCheckSyn = true)
         {
             if (notCheckSyn)
@@ -183,20 +202,22 @@ namespace Project_SFX_Config
                     }
                     configFile.WriteLine(TCommandsList.Items[i].SubItems[1].Text + "=\"" + Tools.ReplaceStrings(TCommandsList.Items[i].SubItems[2].Text, new[] { "\\", "\"" }, new[] { "\\\\", "\\\"" }, prefs.AutoReplace) + "\"");
                 }
-                
+
                 for (int i = 0; i < 15; i++)
                 {
                     if ((Params.Languages[i][1] != null) && (Params.Languages[i][1] != "")) configFile.WriteLine(Params.Languages[i][0] + "=\"" + Tools.ReplaceStrings(Params.Languages[i][1], new[] { "\\", "\"" }, new[] { "\\\\", "\\\"" }, prefs.AutoReplace) + "\"");
                 }
-                
+
                 switch (TGUIMode.Text)
                 {
                     case "(0) - обычный режим":
                         configFile.WriteLine("GUIMode=\"0\"");
                         break;
+
                     case "(1) - без возможности отмены распаковки":
                         configFile.WriteLine("GUIMode=\"1\"");
                         break;
+
                     case "(2) - невидимый режим":
                         configFile.WriteLine("GUIMode=\"2\"");
                         break;
@@ -205,20 +226,23 @@ namespace Project_SFX_Config
                 switch (TOverWriteCombo.Text)
                 {
                     case "(0) - перезаписывать все файлы":
-                        configFile.WriteLine(TOverwritesysCheck.Checked 
-												? "OverwriteMode=\"8\"" 
-							: "OverwriteMode=\"0\"");
+                        configFile.WriteLine(TOverwritesysCheck.Checked
+                                                ? "OverwriteMode=\"8\""
+                            : "OverwriteMode=\"0\"");
                         break;
+
                     case "(1) - не перезаписывать существующие":
                         configFile.WriteLine(TOverwritesysCheck.Checked
                                                 ? "OverwriteMode=\"1+8\""
                                                 : "OverwriteMode=\"1\"");
                         break;
+
                     case "(2) - перезаписывать только старые":
                         configFile.WriteLine(TOverwritesysCheck.Checked
                                                 ? "OverwriteMode=\"2+8\""
                                                 : "OverwriteMode=\"2\"");
                         break;
+
                     default:
                         if (TOverwritesysCheck.Checked)
                             configFile.WriteLine("OverwriteMode=\"8\"");
@@ -242,51 +266,51 @@ namespace Project_SFX_Config
                 if (miscFlags != "") configFile.WriteLine("MiscFlags=\"" + miscFlags + "\"");
                 configFile.Write(";!@InstallEnd@!");
 
-                    for (var i = 0; i < sections.Count; i++)
+                for (var i = 0; i < sections.Count; i++)
+                {
+                    configFile.WriteLine("\r\n;!@Install@!UTF-8:" + (string)sections[i] + "!");
+                    for (var j = 0; j < TCommandsList.Items.Count; j++)
                     {
-                        configFile.WriteLine("\r\n;!@Install@!UTF-8:" + (string)sections[i] + "!");
-                        for (var j = 0; j < TCommandsList.Items.Count; j++)
+                        if ((TCommandsList.Items[j].SubItems[3].Text != (string)sections[i])) continue;
+                        if (TCommandsList.Items[i].SubItems[2].Text == "-")
                         {
-                            if ((TCommandsList.Items[j].SubItems[3].Text != (string) sections[i])) continue;
-                            if (TCommandsList.Items[i].SubItems[2].Text == "-")
+                            configFile.WriteLine(TCommandsList.Items[i].SubItems[1].Text + "=" + TCommandsList.Items[i].SubItems[2].Text);
+                            continue;
+                        }
+                        configFile.WriteLine(TCommandsList.Items[j].SubItems[1].Text + "=\"" + Tools.ReplaceStrings(TCommandsList.Items[j].SubItems[2].Text, new[] { "\\", "\"" }, new[] { "\\\\", "\\\"" }, prefs.AutoReplace) + "\"");
+
+                        for (int g = 2; g < Params.Languages[0].Count; g++)
+                        {
+                            if (CheckFoundLangString(g))
                             {
-                                configFile.WriteLine(TCommandsList.Items[i].SubItems[1].Text + "=" + TCommandsList.Items[i].SubItems[2].Text);
-                                continue;
-                            }
-                            configFile.WriteLine(TCommandsList.Items[j].SubItems[1].Text + "=\"" + Tools.ReplaceStrings(TCommandsList.Items[j].SubItems[2].Text, new[] { "\\", "\"" }, new[] { "\\\\", "\\\"" }, prefs.AutoReplace) + "\"");
-                                
-                            for (int g = 2; g < Params.Languages[0].Count; g++)
-                            {
-                                if (CheckFoundLangString(g))
+                                var reg = new Regex(@"[\w\(\)\s]+\s*-\s*(\d{4,5})");
+                                var text = reg.Replace(TTextLangsCombo.Items[g - 1].ToString(), "Language:$1");
+                                for (var f = 0; f < 15; f++)
                                 {
-                                    var reg = new Regex(@"[\w\(\)\s]+\s*-\s*(\d{4,5})");
-                                    var text = reg.Replace(TTextLangsCombo.Items[g - 1].ToString(), "Language:$1");
-                                    for (var f = 0; f < 15; f++)
-                                    {
-                                        if ((Params.Languages[f][g] == null) || (Params.Languages[f][g] == "") ||
-                                            ((string) sections[i] != text)) continue;
-                                        configFile.WriteLine(Params.Languages[f][0] + "=\"" + Tools.ReplaceStrings(Params.Languages[f][g], new[] { "\\", "\"" }, new[] { "\\\\", "\\\"" }, prefs.AutoReplace) + "\"");
-                                        Params.Languages[f][g] = null;
-                                    }
+                                    if ((Params.Languages[f][g] == null) || (Params.Languages[f][g] == "") ||
+                                        ((string)sections[i] != text)) continue;
+                                    configFile.WriteLine(Params.Languages[f][0] + "=\"" + Tools.ReplaceStrings(Params.Languages[f][g], new[] { "\\", "\"" }, new[] { "\\\\", "\\\"" }, prefs.AutoReplace) + "\"");
+                                    Params.Languages[f][g] = null;
                                 }
                             }
                         }
-                        configFile.Write(";!@InstallEnd@:" + (string)sections[i] + "!");
                     }
-                  for (var i = 2; i < Params.Languages[0].Count; i++)
-                   {
-                       if (!CheckFoundLangString(i)) continue;
-                       var reg = new Regex(@"[\w\(\)\s]+\s*-\s*(\d{4,5})");
-                       var text = reg.Replace(TTextLangsCombo.Items[i - 1].ToString(), "Language:$1");
-                       configFile.WriteLine(";!@Install@!UTF-8:" + text + "!");
-                       for (var j = 0; j < 15; j++)
-                       {
-                           if ((Params.Languages[j][i] != null) && (Params.Languages[j][i] != "")) configFile.WriteLine(
-                               Params.Languages[j][0] + "=\"" + Tools.ReplaceStrings(Params.Languages[j][i], new[] { "\\", "\"" },
-                                                                                     new[] { "\\\\", "\\\"" }, prefs.AutoReplace) + "\"");
-                       }
-                       configFile.WriteLine(";!@InstallEnd@:" + text + "!\r\n");
-                   }
+                    configFile.Write(";!@InstallEnd@:" + (string)sections[i] + "!");
+                }
+                for (var i = 2; i < Params.Languages[0].Count; i++)
+                {
+                    if (!CheckFoundLangString(i)) continue;
+                    var reg = new Regex(@"[\w\(\)\s]+\s*-\s*(\d{4,5})");
+                    var text = reg.Replace(TTextLangsCombo.Items[i - 1].ToString(), "Language:$1");
+                    configFile.WriteLine(";!@Install@!UTF-8:" + text + "!");
+                    for (var j = 0; j < 15; j++)
+                    {
+                        if ((Params.Languages[j][i] != null) && (Params.Languages[j][i] != "")) configFile.WriteLine(
+                            Params.Languages[j][0] + "=\"" + Tools.ReplaceStrings(Params.Languages[j][i], new[] { "\\", "\"" },
+                                                                                  new[] { "\\\\", "\\\"" }, prefs.AutoReplace) + "\"");
+                    }
+                    configFile.WriteLine(";!@InstallEnd@:" + text + "!\r\n");
+                }
                 configFile.Close();
                 configFile.Dispose();
             }
@@ -350,7 +374,7 @@ namespace Project_SFX_Config
                         Params.Languages[num].Add(Tools.ReplaceStrings(param, new[] { "\n", "\t" }, new[] { "\\n", "\\t" }));
                         continue;
                     }
-                    Params.Languages[k].Add(null);   
+                    Params.Languages[k].Add(null);
                 }
                 break;
             }
@@ -358,12 +382,12 @@ namespace Project_SFX_Config
 
         private static bool CheckFoundLangString(int index)
         {
-	        for (var i = 0; i < 15; i++)
-	        {
+            for (var i = 0; i < 15; i++)
+            {
                 if ((Params.Languages[i][index] != null) && (Params.Languages[i][index] != ""))
-                    return true;   
+                    return true;
             }
-        
+
             return false;
         }
 
@@ -372,14 +396,13 @@ namespace Project_SFX_Config
             var edit = new EditForm
                            {
                                TextEdit =
-                                   Tools.ReplaceStrings(strToEdit.Text, new[] {"\\\\", "\\\"", "\\n", "\\t"},
-                                                        new[] {"\\", "\"", "\r\n", "\t"})
+                                   Tools.ReplaceStrings(strToEdit.Text, new[] { "\\\\", "\\\"", "\\n", "\\t" },
+                                                        new[] { "\\", "\"", "\r\n", "\t" })
                            };
             if (edit.ShowDialog() == DialogResult.OK)
             {
                 strToEdit.Text = Tools.ReplaceStrings(edit.TextEdit, new[] { "\\", "\"", "\n", "\t", "\r" }, new[] { "\\\\", "\\\"", "\\n", "\\t", "" });
                 SetStateSaveButton(true);
-                
             }
             edit.Dispose();
         }
@@ -389,7 +412,6 @@ namespace Project_SFX_Config
             var guiFlags = input.Split('+');
             foreach (var guiflag in guiFlags)
             {
-
                 if (Regex.IsMatch(guiflag, @"\s*\d+\s*"))
                 {
                     var flag = Math.Log(double.Parse(guiflag.Trim()), 2);
@@ -497,13 +519,13 @@ namespace Project_SFX_Config
             TSaveToolButton.Enabled = state;
         }
 
-        #endregion
+        #endregion Extended Functions
 
         #region List Commands & Buttons
 
         private void ComDeleteClick(object sender, EventArgs e)
         {
-	        SFX.Delete(TCommandsList);
+            SFX.Delete(TCommandsList);
             _index = -1;
         }
 
@@ -523,19 +545,18 @@ namespace Project_SFX_Config
         {
             if (TCommandsList.SelectedItems.Count <= 0) return;
             _index = TCommandsList.SelectedItems[0].Index;
-            string comm = TCommandsList.SelectedItems[0].SubItems[1].Text , liter = "";
+            string comm = TCommandsList.SelectedItems[0].SubItems[1].Text, liter = "";
             if (comm.Contains("AutoInstall") || comm.Contains("Delete") || comm.Contains("Shortcut"))
             {
                 liter = comm.Replace("AutoInstall", "");
                 liter = liter.Replace("Delete", "");
                 liter = liter.Replace("Shortcut", "");
-
             }
             else
                 TModifText.Text = "";
 
             TCommText.Text = liter != "" ? comm.Replace(liter, "") : comm;
-               
+
             TModifText.Text = liter;
             TParamText.Text = TCommandsList.SelectedItems[0].SubItems[2].Text;
             var matchReg = new Regex(@"(?<arch>x\d{2})?(:?Language:(?<lang>\d{4}))?");
@@ -550,6 +571,7 @@ namespace Project_SFX_Config
                     case "x86":
                         TListx86Arch.Checked = true;
                         break;
+
                     case "x64":
                         TListx64Arch.Checked = true;
                         break;
@@ -557,7 +579,6 @@ namespace Project_SFX_Config
             }
             else
                 TListNoArch.Checked = true;
-
 
             if (lang != "")
             {
@@ -643,14 +664,14 @@ namespace Project_SFX_Config
 
         private void DoublicateListClick(object sender, EventArgs e)
         {
-			SFX.Duplicate(ref TCommandsList);
-			SetStateSaveButton(true);
+            SFX.Duplicate(ref TCommandsList);
+            SetStateSaveButton(true);
         }
 
         private void DeleteListClick(object sender, EventArgs e)
         {
-			_index = SFX.Delete(TCommandsList);
-			SetStateSaveButton(true);
+            _index = SFX.Delete(TCommandsList);
+            SetStateSaveButton(true);
         }
 
         private void ListLangComboSelectedIndexChanged(object sender, EventArgs e)
@@ -675,7 +696,7 @@ namespace Project_SFX_Config
 
         private void ModifTextKeyPress(object sender, KeyPressEventArgs e)
         {
-	        SFX.AntiModification(sender, e);
+            SFX.AntiModification(sender, e);
         }
 
         private void ModifTextTextChanged(object sender, EventArgs e)
@@ -687,7 +708,7 @@ namespace Project_SFX_Config
             SetStateSaveButton(true);
         }
 
-        #endregion
+        #endregion List Commands & Buttons
 
         #region TextEditing
 
@@ -798,7 +819,7 @@ namespace Project_SFX_Config
             TWarningTitleEdit.Text = Params.Languages[11][TTextLangsCombo.SelectedIndex + 1];
             TPasswordTitleEdit.Text = Params.Languages[12][TTextLangsCombo.SelectedIndex + 1];
             TPasswordText.Text = Params.Languages[13][TTextLangsCombo.SelectedIndex + 1];
-            if ((Params.Languages[14][TTextLangsCombo.SelectedIndex + 1] == null) || (Params.Languages[14][TTextLangsCombo.SelectedIndex + 1] == "")) 
+            if ((Params.Languages[14][TTextLangsCombo.SelectedIndex + 1] == null) || (Params.Languages[14][TTextLangsCombo.SelectedIndex + 1] == ""))
                 timeOut = 0;
             else
                 timeOut = int.Parse(Params.Languages[14][TTextLangsCombo.SelectedIndex + 1]);
@@ -835,7 +856,12 @@ namespace Project_SFX_Config
             OpenEditForm(THelpTextEdit);
         }
 
-        #endregion
+        private void TPasswordTextBt_Click(object sender, EventArgs e)
+        {
+            OpenEditForm(TPasswordText);
+        }
+
+        #endregion TextEditing
 
         #region ToolButtons & Menu
 
@@ -844,7 +870,7 @@ namespace Project_SFX_Config
             MRUMenu.RemoveAll();
             MRUMenu.SaveToRegistry();
         }
-        
+
         private void CheckButtonClick(object sender, EventArgs e)
         {
             var tempFile = Path.Combine(Path.GetTempPath(), "conf.txt");
@@ -854,13 +880,13 @@ namespace Project_SFX_Config
 
             File.Delete(tempFile);
         }
-       
+
         private void ToolStripButton1Click(object sender, EventArgs e)
         {
             BuildFile(Path.Combine(Application.StartupPath, "test.txt"));
             Tools.Execute(Path.Combine(Application.StartupPath, "test.bat"), Path.Combine(Application.StartupPath, "test.txt"));
         }
-        
+
         private void NewFileMenuClick(object sender, EventArgs e)
         {
             if (MessageBox.Show(this, "Вы уверены, что хотите создать новый файл?\nВсе изменения будут утеряны.", "Внимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
@@ -868,8 +894,8 @@ namespace Project_SFX_Config
                 ClearForm();
                 SetGUIMode(Params.MainIniFile.GetString("General", "GUIMode", "1"));
                 SetOverwriteMode(Params.MainIniFile.GetString("General", "OverwriteMode", "Нет"));
-				SFX.SetFlags(Params.MainIniFile.GetString("General", "MiscFlags", "4"), ref TMiscList, 9);
-				SFX.SetFlags(Params.MainIniFile.GetString("General", "GUIFlags", "2+4+8+16+32+2048+4096"), ref TDesignList, 16385);
+                SFX.SetFlags(Params.MainIniFile.GetString("General", "MiscFlags", "4"), ref TMiscList, 9);
+                SFX.SetFlags(Params.MainIniFile.GetString("General", "GUIFlags", "2+4+8+16+32+2048+4096"), ref TDesignList, 16385);
             }
         }
 
@@ -910,7 +936,7 @@ namespace Project_SFX_Config
                 BuildFile(Params.SavedPath);
                 SetStateSaveButton(false);
             }
-        } 
+        }
 
         private void CloseMenuClick(object sender, EventArgs e)
         {
@@ -944,7 +970,7 @@ namespace Project_SFX_Config
             aboutWin.ShowDialog();
         }
 
-        #endregion
+        #endregion ToolButtons & Menu
 
         #region Changing State
 
@@ -978,7 +1004,7 @@ namespace Project_SFX_Config
             SetStateSaveButton(true);
         }
 
-        #endregion
+        #endregion Changing State
 
         #region Form Events
 
@@ -997,18 +1023,17 @@ namespace Project_SFX_Config
             for (var i = 0; i < langs.Length; i++)
                 AddLangInCombos(langs[i]);
 
-
             TListLangCombo.Text = "Отсутствует";
             TTextLangsCombo.Text = "Основная";
-            
+
             SetGUIMode(Params.MainIniFile.GetString("General", "GUIMode", "1"));
             SetOverwriteMode(Params.MainIniFile.GetString("General", "OverwriteMode", "Нет"));
-			SFX.SetFlags(Params.MainIniFile.GetString("General", "MiscFlags", "4"), ref TMiscList, 9);
-			SFX.SetFlags(Params.MainIniFile.GetString("General", "GUIFlags", "2+4+8+16+32+2048+4096"), ref TDesignList, 16385);
+            SFX.SetFlags(Params.MainIniFile.GetString("General", "MiscFlags", "4"), ref TMiscList, 9);
+            SFX.SetFlags(Params.MainIniFile.GetString("General", "GUIFlags", "2+4+8+16+32+2048+4096"), ref TDesignList, 16385);
             SetStateSaveButton(false);
 
             ToolTiper.SetToolTip(TBeginPromptTimeOut,
-                "*   1...999 - обратный отсчет времени на кнопке \"Да\" (\"OK\")\n" 
+                "*   1...999 - обратный отсчет времени на кнопке \"Да\" (\"OK\")\n"
                 + "* - 1...-999 - обратный отсчет времени на кнопке \"Нет\" (\"Отмена\")\n"
                 + "*   0 - игнорируется\n"
                 + "По истечении времени кнопки автоматически нажимаются.");
@@ -1029,6 +1054,6 @@ namespace Project_SFX_Config
             }
         }
 
-        #endregion
+        #endregion Form Events
     }
 }
